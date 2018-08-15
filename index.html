@@ -13,8 +13,52 @@
 </head>
 
 <body>
+  <!-- CURRENT GAME CONTAINER -->
+  <section class="container-fluid">
+    <div class="row">
+      <div class="col-md-5 offset-md-3">
+        <h1>D2 DRAGON-DUEL</h1>
+      </div>
+    </div>
+    <div class="row">
+      <div id="champion" class="col-md-6">
 
-  <button onclick="app.controllers.gameController.test()">Test</button>
+
+      </div>
+      <div id="dragon" class="col-md-6">
+
+      </div>
+    </div>
+    <div class="row">
+      <div id="game-status" class="col-md-12">
+        <h3>STATUS:
+          <span id="status" class="text-warning"></span>
+        </h3>
+      </div>
+    </div>
+  </section>
+
+  <!-- GAME SETUP CONTAINER -->
+  <section class=" container-fluid">
+    <div class="row ">
+      <div id="saved-games" class="col-md-12"></div>
+      <div class="row">
+        <div class="col-md-6">
+          <div id="champion-list" class="row">
+
+          </div>
+
+        </div>
+        <div class="col-md-6">
+          <div id="dragon-list" class="row"></div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
   <script src="main.js" type="module"></script>
 </body>
