@@ -2,4 +2,20 @@
   outline: 1px solid white;
 }
 
+.champ-card {
+max-height: 300px; 
+width: auto;
+}
 
+.dragon-card {
+  max-width: 300px;
+  height: auto;
+}
+
+#ac-img {
+  height: 400px;
+}
+
+#ad-img {
+  height: 400px;
+}

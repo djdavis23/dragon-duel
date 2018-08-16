@@ -6,8 +6,7 @@ const activeDragon = document.getElementById("dragon")
 const status = document.getElementById("status")
 const attackButtons = document.getElementsByClassName("btn-attack")
 const startButton = document.getElementById("btn-start")
-const pauseButton = document.getElementById("btn-pause")
-const newButton = document.getElementById("btn-new")
+
 
 
 //draws the list of available champions to the UI for the user to review/select
@@ -16,16 +15,21 @@ function drawChampions(champions) {
   champions.forEach(champion => {
     let myAttacks = Object.keys(champion.attacks)
     template += `
-      <div class="col-md-6 mb-2 pb-2 champbox">
-        <div><img class="img-fluid" src="${champion.imgUrl}" alt="champion" /></div>
-        <h5>Name:  ${champion.name}</h5>
-        <p>Race:  ${champion.race}</p>
-        <p>Class:  ${champion.class}</p>
-        <p>Health:  ${champion.hp.toString()}</p>
-        <p>Attacks: ${myAttacks.toString()}</p>
-        <button onclick="app.controllers.gameController.setChampion(${champion.id})">SELECT</button>
-      </div>    
-    `
+      <div class="card mb-3 mr-2">
+        <h3 class="card-header">${champion.name}</h3>    
+        <img class="champ-card" src="${champion.imgUrl}" alt="Champion image">
+    
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">Race:  ${champion.race}</li>
+          <li class="list-group-item">Class:  ${champion.class}</li>
+          <li class="list-group-item">Health:  ${champion.hp.toString()}</li>
+          <li class="list-group-item">Attacks: ${myAttacks.toString()} </li>
+        </ul>    
+        <div class="card-footer text-muted">
+          <button class="btn btn-primary btn-block" onclick="app.controllers.gameController.setChampion(${champion.id})">SELECT</button>
+        </div>
+      </div>
+  `
     document.getElementById("champion-list").innerHTML = template
   })
 }
@@ -34,14 +38,22 @@ function drawChampions(champions) {
 function drawDragons(dragons) {
   let template = ''
   dragons.forEach(dragon => {
+
     template += `
-      <div class="col-md-6 mb-2 pb-2 dragonbox">
-        <div><img class="img-fluid" src="${dragon.imgUrl}" alt="Dragon" /></div>
-        <h5>Name:  ${dragon.name}</h5>        
-        <p>Health:  ${dragon.maxHP.toString()}</p>        
-        <button onclick="app.controllers.gameController.setDragon(${dragon.id})">SELECT</button>
-      </div>    
-    `
+    <div class="card mb-3">
+      <h3 class="card-header">${dragon.name}</h3>    
+      <img class="dragon-card" src="${dragon.imgUrl}" alt="dragon image" />
+      <div class="card-body">
+        <h5 class="card-title">Health:  ${dragon.maxHP.toString()}</h5>        
+      </div>         
+      <div class="card-footer text-muted">
+        <button class="btn btn-primary btn-block" onclick="app.controllers.gameController.setDragon(${dragon.id})">SELECT</button>
+      </div>
+    </div>
+`
+
+
+
     document.getElementById("dragon-list").innerHTML = template
   })
 }
@@ -51,13 +63,14 @@ function drawChampion(champion) {
   let template = `
     <h4>${champion.name}</h4>
     <h4>Health:  <span id="curr-HP">${champion.hp}</span></h4>
-    <div><img src="${champion.imgUrl}" height=400px" /></div>
+    <div><img id="ac-img" src="${champion.imgUrl}" alt="active champion image" /></div>
   `
   Object.keys(champion.attacks).forEach(attack => {
     template += `
       <button class="btn btn-danger btn-attack" onclick="app.controllers.gameController.attack('${attack}')">${attack}</button>
     `
   })
+
   activeChampion.innerHTML = template
 
 }
@@ -67,7 +80,7 @@ function drawDragon(dragon) {
   let template = `
     <h4>${dragon.name}</h4>
     <h4>Health:  <span id="curr-HP">${dragon.currentHP}</span></h4>
-    <div><img class="img-fluid" src="${dragon.imgUrl}" /></div>
+    <div><img id="ad-img" src="${dragon.imgUrl}" alt="active dragon image" /></div>    
   `
 
   activeDragon.innerHTML = template
