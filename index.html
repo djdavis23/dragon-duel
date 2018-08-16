@@ -16,21 +16,13 @@
   <!-- CURRENT GAME CONTAINER -->
   <section class="container-fluid">
     <div class="row">
-      <div class="col-md-5 offset-md-3">
+      <div class="col-md-5">
         <h1>D2 DRAGON-DUEL</h1>
       </div>
-    </div>
-    <div class="row">
-      <div id="champion" class="col-md-6">
-
-
+      <div class="col-md-1">
+        <button id="btn-start" class="btn btn-lg btn-primary" onclick="app.controllers.gameController.startGame()" disabled>FIGHT!</button>
       </div>
-      <div id="dragon" class="col-md-6">
-
-      </div>
-    </div>
-    <div class="row">
-      <div id="game-status" class="col-md-12">
+      <div id="game-status" class="col-md-6">
         <h3>STATUS:
           <span id="status" class="text-warning"></span>
         </h3>
@@ -40,21 +32,30 @@
 
   <!-- GAME SETUP CONTAINER -->
   <section class=" container-fluid">
-    <div class="row ">
-      <div id="saved-games" class="col-md-12"></div>
-      <div class="row">
-        <div class="col-md-6">
-          <div id="champion-list" class="row">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="row">
+          <div id="champion" class="col-md-12 mb-2">
+
 
           </div>
+        </div>
+        <div id="champion-list" class="row">
 
         </div>
-        <div class="col-md-6">
-          <div id="dragon-list" class="row"></div>
+      </div>
+      <div class="col-md-6">
+        <div class="row">
+          <div id="dragon" class="col-md-12 mb-5">
+
+          </div>
+        </div>
+        <div id="dragon-list" class="row">
 
         </div>
       </div>
     </div>
+
   </section>
 
 

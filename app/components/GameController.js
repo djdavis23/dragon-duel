@@ -4,6 +4,10 @@ const gs = new GameService()
 const activeChampion = document.getElementById("champion")
 const activeDragon = document.getElementById("dragon")
 const status = document.getElementById("status")
+const attackButtons = document.getElementsByClassName("btn-attack")
+const startButton = document.getElementById("btn-start")
+const pauseButton = document.getElementById("btn-pause")
+const newButton = document.getElementById("btn-new")
 
 function drawChampions(champions) {
   let template = ''
@@ -46,7 +50,7 @@ function drawChampion(champion) {
   `
   Object.keys(champion.attacks).forEach(attack => {
     template += `
-      <button class="btn btn-primary" onclick="app.controllers.gameController.attack('${attack})">${attack}</button>
+      <button class="btn btn-danger btn-attack" onclick="app.controllers.gameController.attack('${attack}')">${attack}</button>
     `
   })
   activeChampion.innerHTML = template
@@ -63,8 +67,25 @@ function drawDragon(dragon) {
   activeDragon.innerHTML = template
 }
 
-function drawGames(games) {
+function toggleButtons(attackDisabled, startDisabled) {
 
+  if (attackDisabled) {
+    attackButtons[0].setAttribute('disabled', 'disabled')
+    attackButtons[1].setAttribute('disabled', 'disabled')
+    attackButtons[2].setAttribute('disabled', 'disabled')
+  }
+  else {
+    attackButtons[0].removeAttribute('disabled')
+    attackButtons[1].removeAttribute('disabled')
+    attackButtons[2].removeAttribute('disabled')
+
+  }
+  if (startDisabled) {
+    startButton.setAttribute('disabled', 'disabled')
+  }
+  else {
+    startButton.removeAttribute('disabled')
+  }
 }
 
 function logError(error) {
@@ -75,31 +96,59 @@ function setStatus(message) {
   status.innerText = message
 }
 
+function updateGame(game) {
+  drawChampion(game.champion)
+  drawDragon(game.dragon)
+  setStatus(game.history[game.history.length - 1])
+  if (game.champion.hp <= 0 || game.dragon.currentHP <= 0) {
+    toggleButtons(true, true)
+    gs.deleteGame(game, logError)
+    if (game.champion.hp <= 0 && game.dragon.currentHP <= 0) {
+      setStatus("YOU\'RE BOTH DEAD!!")
+    }
+    else if (game.champion.hp <= 0) {
+      setStatus("YOU LOSE")
+    }
+    else {
+      setStatus("YOU WIN!!!!")
+    }
+  }
+}
+
 export default class GameController {
 
   constructor() {
-    //gs.getGames(drawGames)    
     gs.getChampions(drawChampions, logError)
     setStatus("Select a Champion")
-  }
-
-  getCombatants() {
-    gs.getChampions(drawChampions, logError)
-
   }
 
   setChampion(championID) {
     gs.setChampion(championID)
     drawChampion(gs.myChampion)
+    toggleButtons(true, true)
     gs.getDragons(drawDragons, logError)
-    setStatus("Select a Dragon")
+    if (gs.myDragon.id == undefined) {
+      setStatus("Select a Dragon")
+    }
   }
-
 
   setDragon(dragonID) {
     gs.setDragon(dragonID)
     drawDragon(gs.myDragon)
     setStatus("When ready, select FIGHT button to begin combat!")
+    toggleButtons(true, false)
+  }
+
+  startGame(logError) {
+    gs.startGame()
+    toggleButtons(false, true)
+    document.getElementById("champion-list").style.display = "none"
+    document.getElementById("dragon-list").style.display = "none"
+    setStatus("GAME ON!")
+  }
+
+  attack(typeAttack) {
+    gs.attack(typeAttack, updateGame, logError)
   }
 
 }

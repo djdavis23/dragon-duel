@@ -3,5 +3,6 @@ export default class Game {
     this.id = g._id
     this.dragon = g._dragon
     this.champion = g._champion
+    this.history = g.history
   }
 }
