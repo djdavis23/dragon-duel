@@ -9,9 +9,12 @@ const startButton = document.getElementById("btn-start")
 const pauseButton = document.getElementById("btn-pause")
 const newButton = document.getElementById("btn-new")
 
+
+//draws the list of available champions to the UI for the user to review/select
 function drawChampions(champions) {
   let template = ''
   champions.forEach(champion => {
+    let myAttacks = Object.keys(champion.attacks)
     template += `
       <div class="col-md-6 mb-2 pb-2 champbox">
         <div><img class="img-fluid" src="${champion.imgUrl}" alt="champion" /></div>
@@ -19,7 +22,7 @@ function drawChampions(champions) {
         <p>Race:  ${champion.race}</p>
         <p>Class:  ${champion.class}</p>
         <p>Health:  ${champion.hp.toString()}</p>
-        <p>Attacks: ${champion.attacks.toString()}</p>
+        <p>Attacks: ${myAttacks.toString()}</p>
         <button onclick="app.controllers.gameController.setChampion(${champion.id})">SELECT</button>
       </div>    
     `
@@ -27,6 +30,7 @@ function drawChampions(champions) {
   })
 }
 
+//draws list of available dragons to UI for the user to review/select
 function drawDragons(dragons) {
   let template = ''
   dragons.forEach(dragon => {
@@ -42,6 +46,7 @@ function drawDragons(dragons) {
   })
 }
 
+//draws the user-selected champion to the game board
 function drawChampion(champion) {
   let template = `
     <h4>${champion.name}</h4>
@@ -57,6 +62,7 @@ function drawChampion(champion) {
 
 }
 
+//draws the user-selected dragon to the game board
 function drawDragon(dragon) {
   let template = `
     <h4>${dragon.name}</h4>
@@ -67,6 +73,7 @@ function drawDragon(dragon) {
   activeDragon.innerHTML = template
 }
 
+//enables and disables buttons as needed based on game status
 function toggleButtons(attackDisabled, startDisabled) {
 
   if (attackDisabled) {
@@ -88,14 +95,17 @@ function toggleButtons(attackDisabled, startDisabled) {
   }
 }
 
+//logs all HTTP request errors to the console
 function logError(error) {
   console.log(error.message)
 }
 
+//updates the status bar based on game play
 function setStatus(message) {
   status.innerText = message
 }
 
+//updates UI after each attack
 function updateGame(game) {
   drawChampion(game.champion)
   drawDragon(game.dragon)
@@ -122,6 +132,7 @@ export default class GameController {
     setStatus("Select a Champion")
   }
 
+  //sets the active champion based on user selection
   setChampion(championID) {
     gs.setChampion(championID)
     drawChampion(gs.myChampion)
@@ -132,6 +143,7 @@ export default class GameController {
     }
   }
 
+  //sets the active dragon based on user selection
   setDragon(dragonID) {
     gs.setDragon(dragonID)
     drawDragon(gs.myDragon)
@@ -139,6 +151,7 @@ export default class GameController {
     toggleButtons(true, false)
   }
 
+  //event handler for UI "FIGHT" button
   startGame(logError) {
     gs.startGame()
     toggleButtons(false, true)
@@ -147,6 +160,7 @@ export default class GameController {
     setStatus("GAME ON!")
   }
 
+  //event handler for champion attack buttons
   attack(typeAttack) {
     gs.attack(typeAttack, updateGame, logError)
   }

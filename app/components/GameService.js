@@ -8,6 +8,7 @@ const ddAPI = axios.create({
   timeout: 3000
 })
 
+//placeholders to store data retrieved from the server
 let champions = []
 let dragons = []
 let myChampion = {}
@@ -17,12 +18,15 @@ let myGame = {}
 
 export default class GameService {
 
+  //retrieves saved games from the server
+  //not in use at this time
   getGames(drawGames, logError) {
     ddAPI.get("games")
       .then(res => console.log(res))
       .catch(logError)
   }
 
+  //requests complete list of champions from the server
   getChampions(draw, error) {
     ddAPI.get("champions")
       .then(res => {
@@ -34,6 +38,7 @@ export default class GameService {
       .catch(error)
   }
 
+  //requests complete list of dragons from the server
   getDragons(draw, error) {
     ddAPI.get("dragons")
       .then(res => {
@@ -45,10 +50,12 @@ export default class GameService {
       .catch(error)
   }
 
+  //sets the active champion based on user selection
   setChampion(championID) {
     myChampion = champions[championID]
   }
 
+  //getter method to provide controller a copy of the private champion
   get myChampion() {
     return {
       id: myChampion.id,
@@ -61,10 +68,12 @@ export default class GameService {
     }
   }
 
+  //sets active dragon to the user-selecte dragon
   setDragon(dragonID) {
     myDragon = dragons[dragonID]
   }
 
+  //returns copy of private dragon to the controller
   get myDragon() {
     return {
       id: myDragon.id,
@@ -75,6 +84,7 @@ export default class GameService {
     }
   }
 
+  //posts the new game to the server and instantiates a local copy
   startGame(error) {
     ddAPI.post("games", {
       dragonId: myDragon.id,
@@ -88,6 +98,7 @@ export default class GameService {
       .catch(error)
   }
 
+  //sends attack data to and receives related updates from the server
   attack(typeAttack, updateGame, logError) {
     ddAPI.put("games/" + myGame.id, {
       attack: typeAttack
@@ -100,6 +111,8 @@ export default class GameService {
       })
       .catch(logError)
   }
+
+  //removes game from the server
   deleteGame(game, logError) {
     ddAPI.delete("games" + game.id)
       .then(res => console.log(res))
